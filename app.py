@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from src.pipeline.predict_pipeline import CustomeData, PredictPipeline
+from werkzeug.exceptions import HTTPException
 
 application = Flask(__name__)
 
@@ -32,6 +33,18 @@ def predict_datapoint():
         predict_pipeline = PredictPipeline()
         results = predict_pipeline.predict(pred_df)
         return render_template('home.html', results=results[0])
+
+@app.errorhandler(Exception)
+def handle_exception(error):
+    if isinstance(error, HTTPException):
+        return error
+
+    app.logger.error(
+        "Prediction request failed",
+        exc_info=(type(error), error, error.__traceback__)
+    )
+
+    return "Internal Server Error. Check Render logs.", 500
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", debug = False)
