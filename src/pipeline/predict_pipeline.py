@@ -2,26 +2,27 @@ import sys
 import pandas as pd
 from src.exception import CustomeException
 from src.utils import load_object
+from pathlib import Path
 
 class PredictPipeline:
-    def __init__(self):
-        pass
+    def predict(self, features):
+        try:
+            project_root = Path(__file__).resolve().parents[2]
 
-    def predict(self,features):
-        try:    
-            model_path = "artifacts\model.pkl"
-            preprocessor_path = "artifacts\preprocessor.pkl"
-            model = load_object(file_path = model_path)
-            preprocessor = load_object(file_path = preprocessor_path)
+            model_path = project_root / "artifacts" / "model.pkl"
+            preprocessor_path = project_root / "artifacts" / "preprocessor.pkl"
+
+            model = load_object(file_path=model_path)
+            preprocessor = load_object(file_path=preprocessor_path)
+
             data_scaled = preprocessor.transform(features)
             preds = model.predict(data_scaled)
+
             return preds
+
         except Exception as e:
-            raise CustomeException(e,sys)
+            raise CustomeException(e, sys)
     
-
-
-
 class CustomeData:
     def __init__(self,
                  gender:str,

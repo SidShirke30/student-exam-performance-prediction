@@ -216,3 +216,22 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Local virtual environments
+venv/
+.venv/
+env/
+
+# Python cache files
+__pycache__/
+*.py[cod]
+
+# Logs and temporary training output
+Logs/
+catboost_info/
+
+# Local environment variables
+.env
+
+# Notebook checkpoints
+.ipynb_checkpoints/
